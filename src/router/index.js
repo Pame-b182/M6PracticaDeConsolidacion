@@ -1,23 +1,37 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+// import Inicio from '@/views/Inicio.vue'
+import Juegos from '@/views/Juegos.vue'
+import Juego from '@/views/Juego.vue'
+import NotFound from '@/views/NotFound.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    name: 'inicio',
+    // Se aplica "lazy loading"
+    component: () => import(/* webpackChunkName: "inicio" */ '@/views/Inicio.vue')
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
+    path: '/juegos',
+    name: 'juegos',
+    alias: ['/games', '/videojuegos'],
+    component: Juegos
+  },
+  {
+    //Path dinámico.
+    path: '/juegos/:id',
+    name: 'juego',
+    component: Juego,
+    props: true
+  },
+  {
+    //Router comodín
+    path: '*',
+    component: NotFound
+  },
 ]
 
 const router = new VueRouter({
